@@ -1,0 +1,13 @@
+# Recurring Hindi article updates
+
+The owner requested automatic publication of new reference-site articles rewritten naturally in Hindi, preserving facts and adding relevant images. The recurring task should update runtime data, not rebuild or redeploy the Site.
+
+The authoritative run policy and JSON contract are in `worker/automation-instructions.json` and served by `GET /api/automation/instructions`. First acquire this Site's current URL and service token through Sites `get_site`. Send that token only to that exact origin, through both the standard `OAI-Sites-Authorization: Bearer <token>` header and `X-Sarkari-Automation: <token>`. Keep it exclusively in memory/stdin. Its SHA256 digest is configured as the secret `AUTOMATION_SERVICE_TOKEN_HASH`. This grants only article-sync operations and cannot log into the admin panel, change credentials or sharing. If token acquisition fails or a rotated token is rejected, report the blocker; do not reset passwords or change access. Sources receive no Site credentials.
+
+Read the saved instructions and state before acting. Respect global pause, per-article manual edits, existing drafts and deletion tombstones. Read reference reports and check official sources; create original Hindi articles, not copied paragraphs. New sources should be from the preceding 72 hours; tracked sources may be older when materially updated. Limit a batch to ten; compare canonical URLs and relevant-content fingerprints. Use current facts without guessing; save unresolved reports as drafts. Original illustrated covers are generated automatically by leaving imageUrl empty and choosing suitable coverLabel/coverDetail.
+
+POST `/api/automation/upsert` and read `/api/articles` plus `/api/automation/state` back to verify the records. Empty batches record successful no-change checks. Do not overwrite the original twelve deleted sources. Owner manual saves pause that article unless the owner explicitly ticks the source-update option. Existing older manual edits are also protected.
+
+A linked Sites schedule performs checks every hour in Asia/Calcutta. Admin `/api/admin/automation` provides pause/resume and last-run results behind the existing username/password session. Password hashes, sessions, existing posts and audience remain separate from automation data.
+
+Public articles and public JSON must never expose the reference brand or URL. Provenance remains private for deduplication. Latest official information overrides the reference; publish official-confirmed reports automatically. Only unresolved doubts go to approval drafts. The owner requested hourly checks and no routine permission prompts.
