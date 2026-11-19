@@ -1,3 +1,7 @@
+# GitHub Pages deployment
+
+Connected-task hourly synchronization and GitHub Pages branch deployment are described in [GITHUB-PAGES-SETUP.md](GITHUB-PAGES-SETUP.md). The public feed contains only published articles and local covers.
+
 # Sarkari Update
 
 Build: `node worker/server.mjs`. This produces the Worker module at `dist/server/index.js` and generates the public document from the shared presentation source. The public document contains no editor or credential logic.
